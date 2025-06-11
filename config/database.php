@@ -27,6 +27,11 @@ if (getenv('JAWSDB_URL')) {
     }
 }
 
+// Test: force a log entry at the very top to ensure logging works
+if (function_exists('logger')) {
+    logger('test log');
+}
+
 // Debug: log DB connection values to storage/logs/laravel.log
 if (function_exists('logger')) {
     logger('DB debug', [
