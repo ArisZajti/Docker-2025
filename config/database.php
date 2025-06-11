@@ -5,11 +5,23 @@ use Illuminate\Support\Str;
 // Heroku JawsDB MySQL support
 if (getenv('JAWSDB_URL')) {
     $url = parse_url(getenv('JAWSDB_URL'));
-    putenv('DB_CONNECTION=mysql');
-    putenv('DB_HOST=' . $url['host']);
-    putenv('DB_DATABASE=' . ltrim($url['path'], '/'));
-    putenv('DB_USERNAME=' . $url['user']);
-    putenv('DB_PASSWORD=' . $url['pass']);
+    $db_settings = [
+        'DB_CONNECTION' => 'mysql',
+        'DB_HOST' => $url['host'],
+        'DB_DATABASE' => ltrim($url['path'], '/'),
+        'DB_USERNAME' => $url['user'],
+        'DB_PASSWORD' => $url['pass'],
+    ];
+    foreach ($db_settings as $key => $value) {
+        putenv("{$key}={$value}");
+        $_ENV[$key] = $value;
+        $_SERVER[$key] = $value;
+    }
+} else {
+    // Optional: log to storage/logs/laravel.log for debugging on Heroku
+    if (function_exists('logger')) {
+        logger('JAWSDB_URL not found in environment.');
+    }
 }
 
 return [
