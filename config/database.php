@@ -2,15 +2,17 @@
 
 use Illuminate\Support\Str;
 
-if (env('JAWSDB_URL')) {
-    $url = parse_url(env('JAWSDB_URL'));
+// Heroku JawsDB MySQL support
+if (getenv('JAWSDB_URL')) {
+    $url = parse_url(getenv('JAWSDB_URL'));
+    putenv('DB_CONNECTION=mysql');
     putenv('DB_HOST=' . $url['host']);
     putenv('DB_DATABASE=' . ltrim($url['path'], '/'));
     putenv('DB_USERNAME=' . $url['user']);
     putenv('DB_PASSWORD=' . $url['pass']);
 }
-return [
 
+return [
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
