@@ -32,7 +32,10 @@ if (function_exists('logger')) {
     logger('test log');
 }
 
-// Direct file_put_contents debug log at the very top to capture all DB connection values
+// Ensure storage/logs exists before logging
+if (!is_dir(__DIR__.'/../../storage/logs')) {
+    @mkdir(__DIR__.'/../../storage/logs', 0777, true);
+}
 file_put_contents(__DIR__.'/../../storage/logs/heroku-debug.log', json_encode([
     'DB_CONNECTION' => getenv('DB_CONNECTION'),
     'DB_HOST' => getenv('DB_HOST'),
