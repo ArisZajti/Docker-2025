@@ -2,15 +2,13 @@
 
 use Illuminate\Support\Str;
 
-// Heroku ClearDB MySQL support
-if (env('CLEARDB_DATABASE_URL')) {
-    $url = parse_url(env('CLEARDB_DATABASE_URL'));
+if (env('JAWSDB_URL')) {
+    $url = parse_url(env('JAWSDB_URL'));
     putenv('DB_HOST=' . $url['host']);
     putenv('DB_DATABASE=' . ltrim($url['path'], '/'));
     putenv('DB_USERNAME=' . $url['user']);
     putenv('DB_PASSWORD=' . $url['pass']);
 }
-
 return [
 
     /*
