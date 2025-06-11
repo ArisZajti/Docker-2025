@@ -32,6 +32,21 @@ if (function_exists('logger')) {
     logger('test log');
 }
 
+// Direct file_put_contents debug log at the very top to capture all DB connection values
+file_put_contents(__DIR__.'/../../storage/logs/heroku-debug.log', json_encode([
+    'DB_CONNECTION' => getenv('DB_CONNECTION'),
+    'DB_HOST' => getenv('DB_HOST'),
+    'DB_PORT' => getenv('DB_PORT'),
+    'DB_DATABASE' => getenv('DB_DATABASE'),
+    'DB_USERNAME' => getenv('DB_USERNAME'),
+    'JAWSDB_URL' => getenv('JAWSDB_URL'),
+    'ENV_DB_CONNECTION' => env('DB_CONNECTION'),
+    'ENV_DB_HOST' => env('DB_HOST'),
+    'ENV_DB_PORT' => env('DB_PORT'),
+    'ENV_DB_DATABASE' => env('DB_DATABASE'),
+    'ENV_DB_USERNAME' => env('DB_USERNAME'),
+], JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
+
 // Debug: log DB connection values to storage/logs/laravel.log
 if (function_exists('logger')) {
     logger('DB debug', [
