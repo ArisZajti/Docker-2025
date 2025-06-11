@@ -70,6 +70,16 @@ if (getenv('SEED_ONCE') === 'true' && !file_exists(storage_path('seeded.marker')
     }
 }
 
+// On every deploy: reset (fresh migrate) and seed the database
+if (getenv('RESET_AND_SEED') === 'true') {
+    try {
+        \Artisan::call('migrate:fresh', ['--force' => true]);
+        \Artisan::call('db:seed', ['--force' => true]);
+    } catch (\Exception $e) {
+        // Optionally log or ignore
+    }
+}
+
 return [
     /*
     |--------------------------------------------------------------------------
