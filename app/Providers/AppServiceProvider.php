@@ -22,8 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (app()->environment('production')) {
-            // Trust Heroku's X-Forwarded-Proto header for HTTPS
-            Request::setTrustedProxies([Request::getClientIp()], Request::HEADER_X_FORWARDED_ALL);
+            // Trust all proxies (Heroku dynos are behind a load balancer)
+            \Illuminate\Http\Request::setTrustedProxies(['0.0.0.0/0'], \Illuminate\Http\Request::HEADER_X_FORWARDED_ALL);
             URL::forceScheme('https');
         }
         //
