@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Str;
 
-// Heroku JawsDB MySQL support
+// Heroku JawsDB MySQL support (set only if not already set)
 if (getenv('JAWSDB_URL')) {
     $url = parse_url(getenv('JAWSDB_URL'));
     $db_settings = [
@@ -13,9 +13,11 @@ if (getenv('JAWSDB_URL')) {
         'DB_PASSWORD' => $url['pass'],
     ];
     foreach ($db_settings as $key => $value) {
-        putenv("{$key}={$value}");
-        $_ENV[$key] = $value;
-        $_SERVER[$key] = $value;
+        if (empty(getenv($key)) && empty($_ENV[$key]) && empty($_SERVER[$key])) {
+            putenv("{$key}={$value}");
+            $_ENV[$key] = $value;
+            $_SERVER[$key] = $value;
+        }
     }
 } else {
     // Optional: log to storage/logs/laravel.log for debugging on Heroku
