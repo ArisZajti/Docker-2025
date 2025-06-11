@@ -1,0 +1,11 @@
+# Use the official MySQL image
+FROM mysql:8.0
+
+# Set environment variables (can be overridden at runtime)
+ENV MYSQL_DATABASE=laravel_db
+ENV MYSQL_USER=laravel_user
+ENV MYSQL_PASSWORD=secret
+ENV MYSQL_ROOT_PASSWORD=root
+
+# Expose port 3306
+EXPOSE 3306

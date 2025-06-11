@@ -1,0 +1,5 @@
+# Use the official phpMyAdmin image
+FROM phpmyadmin/phpmyadmin:latest
+
+# Expose port 8080
+EXPOSE 8080

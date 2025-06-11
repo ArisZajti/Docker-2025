@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile_apache
+    container_name: laravel-apache
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=laravel
+      - DB_PASSWORD=secret
+    depends_on:
+      - mysql
+    command: /bin/sh -c "if ! php artisan tinker --execute=\"echo App\\\\Models\\\\User::count();\" | grep -q '[1-9]'; then php artisan migrate:fresh --seed; else php artisan migrate; fi && apache2-foreground"
+
+  mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile_mysql
+    container_name: laravel-mysql
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    ports:
+      - "3307:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    build:
+      context: .
+      dockerfile: Dockerfile_phpmyadmin
+    container_name: laravel-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+
+volumes:
+  dbdata:
