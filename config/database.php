@@ -11,6 +11,7 @@ if (getenv('JAWSDB_URL')) {
         'DB_DATABASE' => ltrim($url['path'], '/'),
         'DB_USERNAME' => $url['user'],
         'DB_PASSWORD' => $url['pass'],
+        'DB_PORT' => isset($url['port']) ? $url['port'] : '3306',
     ];
     foreach ($db_settings as $key => $value) {
         if (empty(getenv($key)) && empty($_ENV[$key]) && empty($_SERVER[$key])) {
