@@ -1,4 +1,12 @@
 <?php
+// Force HTTPS redirect at the very top for Heroku
+if (
+    isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+    $_SERVER['HTTP_X_FORWARDED_PROTO'] !== 'https'
+) {
+    header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true, 301);
+    exit();
+}
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
