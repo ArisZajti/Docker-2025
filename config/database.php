@@ -60,6 +60,16 @@ if (function_exists('logger')) {
     ]);
 }
 
+// Only run seeder if a marker file does not exist (to seed once)
+if (getenv('SEED_ONCE') === 'true' && !file_exists(storage_path('seeded.marker'))) {
+    try {
+        \Artisan::call('db:seed', ['--force' => true]);
+        file_put_contents(storage_path('seeded.marker'), 'seeded');
+    } catch (\Exception $e) {
+        // Optionally log or ignore
+    }
+}
+
 return [
     /*
     |--------------------------------------------------------------------------
