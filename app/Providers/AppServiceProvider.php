@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if (app()->environment('production')) {
             // Trust all proxies (Heroku dynos are behind a load balancer)
-            \Illuminate\Http\Request::setTrustedProxies(['0.0.0.0/0'], \Illuminate\Http\Request::HEADER_X_FORWARDED_ALL);
+            Request::setTrustedProxies(['0.0.0.0/0'], SymfonyRequest::HEADER_X_FORWARDED_ALL);
             URL::forceScheme('https');
         }
         //
